@@ -22,7 +22,7 @@ function App() {
     globeMaterial.shininess = 15;
   });
 
-  const [ taxa, setTaxa ] = React.useState('all')
+  const [ taxa, setTaxa ] = React.useState('2020')
 
   const globeEl = useRef();
 
@@ -40,29 +40,31 @@ function App() {
   return <><Globe
     ref={globeEl}
     globeMaterial={globeMaterial}
-    globeImageUrl={`https://object-arbutus.cloud.computecanada.ca/bq-io/io/gbif-heatmaps/${taxa}_gbif.jpeg`}
-    bumpImageUrl={`https://object-arbutus.cloud.computecanada.ca/bq-io/io/gbif-heatmaps/earth-topology.jpg#${taxa}`}
+    globeImageUrl={`https://raw.githubusercontent.com/MathewBiddle/bio_ice/main/map_obis_${taxa}.jpg`}
+//    bumpImageUrl={`https://object-arbutus.cloud.computecanada.ca/bq-io/io/gbif-heatmaps/earth-topology.jpg#{taxa}`}
     backgroundImageUrl="https:////unpkg.com/three-globe/example/img/night-sky.png" />
-    <SideNav
+    //<SideNav
       onSelect={changeTaxa} style={{ backgroundColor: '#111111', top:'auto' }}>
-      <SideNav.Nav defaultSelected="all">
-        <NavItem eventKey="all" data-tip="All taxa"  style={{ marginTop: '20px', cursor: 'pointer' }}>
+      <SideNav.Nav defaultSelected="2020">
+        <NavItem eventKey="2020" data-tip="2020"  style={{ marginTop: '20px', cursor: 'pointer' }}>
             <SiPluscodes  style={{ fontSize: '2em', marginLeft: '15px', marginRight: '10px'}}/>
         </NavItem>
-        <NavItem eventKey="plants" data-tip="Plants"  style={{ marginTop: '20px' }}>
+        <NavItem eventKey="2010" data-tip="2010"  style={{ marginTop: '20px' }}>
             <TbPlant2  style={{ fontSize: '2em', marginLeft: '15px' }}/>
         </NavItem>
-        <NavItem eventKey="birds"  data-tip="Birds"   style={{ marginTop: '20px' }}>
+        <NavItem eventKey="2000"  data-tip="2000"   style={{ marginTop: '20px' }}>
            <GiHummingbird style={{ fontSize: '2em', marginLeft: '15px' }}/>
         </NavItem>
-        <NavItem eventKey="mammals" data-tip="Mammals" style={{ marginTop: '20px' }}>
+        <NavItem eventKey="1990" data-tip="1990" style={{ marginTop: '20px' }}>
           <GiSquirrel style={{ fontSize: '2em', marginLeft: '15px'}}/>
         </NavItem>
-        <NavItem eventKey="arthropods" data-tip="Arthropods"  style={{ marginTop: '20px' }}>
+        <NavItem eventKey="1980" data-tip="1980"  style={{ marginTop: '20px' }}>
           <GiSpottedBug style={{ fontSize: '2em', marginLeft: '15px' }}/>
         </NavItem>
       </SideNav.Nav>
-    </SideNav><ReactTooltip effect="solid" type="dark" scrollHide="true" event="mousemove" eventOff="mouseleave" delayHide={1000} /></>
+    </SideNav>
+    <ReactTooltip effect="solid" type="dark" scrollHide="true" event="mousemove" eventOff="mouseleave" delayHide={1000} />
+    </>
    ;
 
 }
