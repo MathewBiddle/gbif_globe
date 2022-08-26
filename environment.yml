@@ -1,0 +1,15 @@
+name: globe
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - nodejs
+  - geopandas
+  - pandas
+  - shapely
+  - geoplot
+  - matplotlib
+  - numpy
+  - cartopy
+  - jupyter
+prefix: C:\Users\Mathew.Biddle\programs\Anaconda3\envs\globe
