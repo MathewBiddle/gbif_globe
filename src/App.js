@@ -40,7 +40,7 @@ function App() {
   return <><Globe
     ref={globeEl}
     globeMaterial={globeMaterial}
-    globeImageUrl={`https://raw.githubusercontent.com/MathewBiddle/bio_ice/main/map_obis_${taxa}.jpg`}
+    globeImageUrl={`https://raw.githubusercontent.com/MathewBiddle/gbif_globe/master/images/map_obis_${taxa}.jpg`}
 //    bumpImageUrl={`https://object-arbutus.cloud.computecanada.ca/bq-io/io/gbif-heatmaps/earth-topology.jpg#{taxa}`}
     backgroundImageUrl="https:////unpkg.com/three-globe/example/img/night-sky.png" />
     //<SideNav
