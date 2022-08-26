@@ -23,7 +23,7 @@ To update web version:
 # To create the jpg images for the globe
 All images that are displayed on the map are found at https://github.com/MathewBiddle/gbif_globe/tree/master/images
 
-The Jupyter notebook Create_species_map_from_OBIS_API.ipynb is used to create the images.
+The Jupyter notebook [Create_species_map_from_OBIS_API.ipynb](https://github.com/MathewBiddle/gbif_globe/blob/master/Create_species_map_from_OBIS_API.ipynb) is used to create the images.
 
 # Things to note:
 * projection is [Platte Carree](https://pro.arcgis.com/en/pro-app/2.8/help/mapping/properties/plate-carree.htm) with a central longitude at 0.0.
