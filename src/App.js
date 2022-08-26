@@ -5,7 +5,7 @@ import React, { useState, useContext } from 'react';
 import SideNav, { Toggle, Nav, NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 import { TbArrowsMaximize, TbLayoutSidebarLeftExpand, TbPlant2 } from "react-icons/tb";
-import { GiHummingbird,GiSquirrel,GiSpottedBug } from "react-icons/gi";
+import { GiCalendarHalfYear,GiSquirrel,GiSpottedBug } from "react-icons/gi";
 import { SiPluscodes } from "react-icons/si";
 import ReactTooltip from 'react-tooltip';
 
@@ -53,7 +53,7 @@ function App() {
             <TbPlant2  style={{ fontSize: '2em', marginLeft: '15px' }}/>
         </NavItem>
         <NavItem eventKey="2000"  data-tip="2000"   style={{ marginTop: '20px' }}>
-           <GiHummingbird style={{ fontSize: '2em', marginLeft: '15px' }}/>
+           <GiCalendarHalfYear style={{ fontSize: '2em', marginLeft: '15px' }}/>
         </NavItem>
         <NavItem eventKey="1990" data-tip="1990" style={{ marginTop: '20px' }}>
           <GiSquirrel style={{ fontSize: '2em', marginLeft: '15px'}}/>
