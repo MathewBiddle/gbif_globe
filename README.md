@@ -11,6 +11,8 @@ Test locally:
 npm run start
 ```
 
+Check that `PUBLIC_URL` is correct in [.env](https://github.com/MathewBiddle/gbif_globe/blob/master/.env)
+
 To update web version:
 * Commit changes to repo
 * Deploy page by running this locally:
@@ -29,3 +31,6 @@ The Jupyter notebook [Create_species_map_from_OBIS_API.ipynb](https://github.com
 * projection is [Platte Carree](https://pro.arcgis.com/en/pro-app/2.8/help/mapping/properties/plate-carree.htm) with a central longitude at 0.0.
 * figure size is width=160, height=80 in inches.
 * NavIcons come from https://react-icons.github.io/react-icons
+
+# To edit globe settings
+See <https://react-globe.netlify.app/>
