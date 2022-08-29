@@ -1,17 +1,29 @@
-GBIF occurrences heatmap on a 3d globe.
+Projecting images on a 3 dimensional globe using [react-globe](https://react-globe.netlify.app/).
 
-Install some stuff:
+# Requirements
+* [nodejs](https://nodejs.org/en/)
+* [conda](https://conda.io/projects/conda/en/latest/user-guide/install/index.html)
+
+## Install `nodejs` using `conda`
+Build the environment using `conda` and the [environment.yml](https://github.com/MathewBiddle/gbif_globe/blob/master/environment.yml) file:
 ```shell
-conda install -c conda-forge nodejs
+conda env create -f environment.yml
+conda activate globe
+```
+
+## Install [`react-scripts`](https://www.npmjs.com/package/react-scripts)
+```shell
 npm install react-scripts --save
 ```
 
-Test locally:
+# Developing globe webpage
+## Test locally:
 ```shell
 npm run start
 ```
 
-Check that `PUBLIC_URL` is correct in [.env](https://github.com/MathewBiddle/gbif_globe/blob/master/.env)
+Check that `PUBLIC_URL` is correct in [.env](https://github.com/MathewBiddle/gbif_globe/blob/master/.env) and pointing
+to the appropriate GH-Pages website.
 
 To update web version:
 * Commit changes to repo
@@ -19,18 +31,19 @@ To update web version:
    ```shell
    npm run deploy
    ```
-* That will kickoff  [GH-Action](https://github.com/MathewBiddle/gbif_globe/actions) to rebuild the webpage.
+* That will kick off the [GH-Action](https://github.com/MathewBiddle/gbif_globe/actions) to rebuild the webpage.
 
- 
-# To create the jpg images for the globe
-All images that are displayed on the map are found at https://github.com/MathewBiddle/gbif_globe/tree/master/images
+## To create the jpg images for the globe
+* All images that are displayed on the map are found at https://github.com/MathewBiddle/gbif_globe/tree/master/images
+* The Jupyter notebook [Create_species_map_from_OBIS_API.ipynb](https://github.com/MathewBiddle/gbif_globe/blob/master/Create_species_map_from_OBIS_API.ipynb) is used to create the images.
+* All image file names must follow the url structure defined in [App.js](https://github.com/MathewBiddle/gbif_globe/blob/bfb6a119e4c619d175eaa0ccb9145563f7f330b5/src/App.js#L43). _Unless you change the App.js code._
+* The images overlay on the globe and topography images with some level of opacity. It's best to do some dark background with your data image.
 
-The Jupyter notebook [Create_species_map_from_OBIS_API.ipynb](https://github.com/MathewBiddle/gbif_globe/blob/master/Create_species_map_from_OBIS_API.ipynb) is used to create the images.
-
-# Things to note:
+### Some things to note about creating the jpg images for the globe:
 * projection is [Platte Carree](https://pro.arcgis.com/en/pro-app/2.8/help/mapping/properties/plate-carree.htm) with a central longitude at 0.0.
-* figure size is width=160, height=80 in inches.
-* NavIcons come from https://react-icons.github.io/react-icons
+* figure size is width=`160`, height=`80` in inches.
 
-# To edit globe settings
-See <https://react-globe.netlify.app/>
+
+## To edit globe settings
+* See <https://react-globe.netlify.app/>
+* NavIcons come from https://react-icons.github.io/react-icons
