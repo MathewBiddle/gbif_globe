@@ -43,7 +43,7 @@ function App() {
     globeImageUrl={`https://raw.githubusercontent.com/MathewBiddle/gbif_globe/master/images/map_obis_${taxa}.jpg`}
     bumpImageUrl={`https://object-arbutus.cloud.computecanada.ca/bq-io/io/gbif-heatmaps/earth-topology.jpg#${taxa}`}
     backgroundImageUrl="https:////unpkg.com/three-globe/example/img/night-sky.png" />
-    //<SideNav
+    <SideNav
       onSelect={changeTaxa} style={{ backgroundColor: '#111111', top:'auto' }}>
       <SideNav.Nav defaultSelected="2020">
         <NavItem eventKey="2020" data-tip="2020"  style={{ marginTop: '20px', cursor: 'pointer' }}>
