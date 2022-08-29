@@ -5,7 +5,7 @@ import React, { useState, useContext } from 'react';
 import SideNav, { Toggle, Nav, NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 import { TbArrowsMaximize, TbLayoutSidebarLeftExpand, TbPlant2 } from "react-icons/tb";
-import { GiCalendarHalfYear,GiSquirrel,GiSpottedBug } from "react-icons/gi";
+import { GiCalendarHalfYear,GiSquirrel,GiSpottedBug,GiWireframeGlobe } from "react-icons/gi";
 import { SiPluscodes } from "react-icons/si";
 import ReactTooltip from 'react-tooltip';
 
@@ -16,11 +16,11 @@ function App() {
   // custom globe material
   const globeMaterial = new THREE.MeshPhongMaterial();
   globeMaterial.bumpScale = 10;
-  new THREE.TextureLoader().load('https:////unpkg.com/three-globe/example/img/earth-water.png', texture => {
-    globeMaterial.specularMap = texture;
-    globeMaterial.specular = new THREE.Color('grey');
-    globeMaterial.shininess = 15;
-  });
+//  new THREE.TextureLoader().load('https:////unpkg.com/three-globe/example/img/earth-water.png', texture => {
+//    globeMaterial.specularMap = texture;
+//    globeMaterial.specular = new THREE.Color('grey');
+//    globeMaterial.shininess = 15;
+//  });
 
   const [ taxa, setTaxa ] = React.useState('2020')
 
@@ -60,6 +60,9 @@ function App() {
         </NavItem>
         <NavItem eventKey="1980" data-tip="1980"  style={{ marginTop: '20px' }}>
           <GiSpottedBug style={{ fontSize: '2em', marginLeft: '15px' }}/>
+        </NavItem>
+        <NavItem eventKey="1970" data-tip="1970"  style={{ marginTop: '20px' }}>
+          <GiWireframeGlobe style={{ fontSize: '2em', marginLeft: '15px' }}/>
         </NavItem>
       </SideNav.Nav>
     </SideNav>
