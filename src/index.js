@@ -8,7 +8,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <App />
-    <div style={{position:'absolute',bottom:"5px",right:'20px',color:'white',zIndex:999,fontSize:'14px'}}>TEXT NEEDS TO BE UPDATED <a style={{color:'white'}} href="DOI URL" target="_blank">ADD DOI HERE</a></div>
+    <div style={{position:'absolute',bottom:"5px",right:'20px',color:'white',zIndex:999,fontSize:'14px'}}>TEXT NEEDS TO BE UPDATED <a style={{color:'white'}} href="https://github.com/MathewBiddle/gbif_globe" target="_blank">GitHub Repository</a></div>
   </React.StrictMode>
 );
 
