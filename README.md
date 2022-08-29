@@ -46,4 +46,5 @@ To update web version:
 
 ## To edit globe settings
 * See <https://react-globe.netlify.app/>
-* NavIcons come from https://react-icons.github.io/react-icons
+* NavIcons come from <https://react-icons.github.io/react-icons>
+* See <https://github.com/vasturiano/three-globe>
