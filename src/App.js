@@ -45,7 +45,7 @@ function App() {
   return <><Globe
     ref={globeEl}
     globeMaterial={globeMaterial}
-    globeImageUrl={`https://raw.githubusercontent.com/MathewBiddle/global-obis-es50/globe/images/globe/map_obis_${taxa}.jpg`}
+    globeImageUrl={`https://raw.githubusercontent.com/MathewBiddle/gbif_globe/master/images/globe/map_obis_${taxa}.jpg`}
     bumpImageUrl={`https://raw.githubusercontent.com/MathewBiddle/gbif_globe/master/images/etopo1.jpg#${taxa}`}
     backgroundImageUrl="https:////unpkg.com/three-globe/example/img/night-sky.png" />
     <SideNav
@@ -67,6 +67,9 @@ function App() {
           <GiSpottedBug style={{ fontSize: '2em', marginLeft: '15px' }}/>
         </NavItem>
         <NavItem eventKey="1970" data-tip="1970"  style={{ marginTop: '20px' }}>
+          <GiWireframeGlobe style={{ fontSize: '2em', marginLeft: '15px' }}/>
+        </NavItem>
+        <NavItem eventKey="1960" data-tip="1960"  style={{ marginTop: '20px' }}>
           <GiWireframeGlobe style={{ fontSize: '2em', marginLeft: '15px' }}/>
         </NavItem>
       </SideNav.Nav>

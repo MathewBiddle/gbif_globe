@@ -38,6 +38,7 @@ To update web version:
 * The Jupyter notebook [Create_species_map_from_OBIS_API.ipynb](https://github.com/MathewBiddle/gbif_globe/blob/master/Create_species_map_from_OBIS_API.ipynb) is used to create the images.
 * All image file names must follow the url structure defined in [App.js](https://github.com/MathewBiddle/gbif_globe/blob/bfb6a119e4c619d175eaa0ccb9145563f7f330b5/src/App.js#L43). _Unless you change the App.js code._
 * The images overlay on the globe and topography images with some level of opacity. It's best to do some dark background with your data image.
+* The Rmarkdown file [use_parquet_file_for_globe.Rmd](https://github.com/MathewBiddle/gbif_globe/blob/master/use_parquet_file_for_globe.Rmd) is used to create the indicator images that are overlayed on the map.
 
 ### Some things to note about creating the jpg images for the globe:
 * projection is [Platte Carree](https://pro.arcgis.com/en/pro-app/2.8/help/mapping/properties/plate-carree.htm) with a central longitude at 0.0.
