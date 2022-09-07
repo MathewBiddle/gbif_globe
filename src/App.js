@@ -26,6 +26,11 @@ function App() {
 
   const globeEl = useRef();
 
+  //const [options, setOptions] = useState({})
+
+  //const options = {cameraZoomSpeed: 5}
+  //setOptions({ })
+
   useEffect(() => {
     setTimeout(() => { // wait for scene to be populated (asynchronously)
       const directionalLight = globeEl.current.scene().children.find(obj3d => obj3d.type === 'DirectionalLight');
@@ -40,7 +45,7 @@ function App() {
   return <><Globe
     ref={globeEl}
     globeMaterial={globeMaterial}
-    globeImageUrl={`https://raw.githubusercontent.com/MathewBiddle/gbif_globe/master/images/map_obis_${taxa}.jpg`}
+    globeImageUrl={`https://raw.githubusercontent.com/MathewBiddle/global-obis-es50/globe/images/globe/map_obis_${taxa}.jpg`}
     bumpImageUrl={`https://raw.githubusercontent.com/MathewBiddle/gbif_globe/master/images/etopo1.jpg#${taxa}`}
     backgroundImageUrl="https:////unpkg.com/three-globe/example/img/night-sky.png" />
     <SideNav
