@@ -1,0 +1,189 @@
+---
+title: "resolution"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{resolution}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(obisindicators)
+library(dplyr)
+library(dggridR) # remotes::install_github("r-barnes/dggridR")
+library(sf)
+library(arrow)
+library(magick)
+library(ggplot2)
+```
+
+
+## Create function to make grid, calculate metrics for different resolution grid sizes
+
+```{r function}
+res_changes <- function(occur, resolution = 9){
+    dggs <- dgconstruct(projection = "ISEA", topology = "HEXAGON", res = resolution)
+    occur$cell <- dgGEO_to_SEQNUM(dggs, occur$decimalLongitude, occur$decimalLatitude)[["seqnum"]]
+    idx <- calc_indicators(occur)
+
+  grid <- dgcellstogrid(dggs, idx$cell) %>%
+    st_wrap_dateline() %>%
+    rename(cell = seqnum) %>%
+    left_join(
+      idx,
+      by = "cell")
+  return(grid)
+}
+```
+
+## Create a function for plotting
+
+```{r function}
+
+gmap <- function(
+    grid, column = "shannon", label = "Shannon index", trans = "identity",
+    crs="+proj=robin +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs",
+    limits = c(0,8)) {
+  
+  world <- rnaturalearth::ne_countries(scale = "medium", returnclass = "sf")
+  bbglobe <- 'POLYGON ((-180 -90, 180 -90, 180 90, -180 90, -180 -90))'
+  sfc <- st_as_sfc(bbglobe,crs='+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0')
+  bb <- sf::st_bbox(st_transform(sfc, crs))
+
+  ggplot() +
+    
+    geom_sf(
+      data = grid, aes_string(
+        fill = column, geometry = "geometry"), show.legend = FALSE, lwd=0) +
+    
+    viridis::scale_color_viridis(
+      option = "inferno", na.value = "white",
+      name = label, trans = trans, limits = limits) +
+    
+    viridis::scale_fill_viridis(
+      option = "inferno", na.value = "white",
+      name = label, trans = trans, limits = limits) +
+    
+    geom_sf(
+      data = world, fill = "#000000", color = NA) +
+    
+    xlab("") + ylab("") +
+    
+    coord_sf(
+      crs  = crs,
+      xlim = bb[c("xmin","xmax")],
+      ylim = bb[c("ymin","ymax")]) +
+    
+    theme(
+      panel.background = element_rect(fill = "grey",
+                                colour = "grey",
+                                size = 0, linetype = "blank"),
+      axis.ticks = element_blank(),
+      axis.title.x = element_blank(),
+      axis.title.y = element_blank(),
+      axis.text = element_blank(),
+      panel.grid = element_blank(),
+      plot.margin = margin(0,0,0,0, "cm"))
+}
+```
+
+# Lets do some work!
+
+## Get the OBIS records
+```{r }
+# get OBIS records
+
+# obis_20220710.parquet downloaded from https://obis.org/data/access on 2022-09-06
+#   NOTE: .gitignore prevents this large file from being on Github
+
+open_parquet_file <- function(filepath){
+  occ_all <- open_dataset(filepath)
+  # NOTE: there are lots of other fields in the parquet file.
+  #     These could be used in the future.
+  occ <- occ_all %>%
+    group_by(
+      decimalLongitude, decimalLatitude, species, date_year) %>%  # remove duplicate rows
+    filter(!is.na(species))  %>%
+    summarize(
+      records = n(),
+      .groups = "drop") %>%
+    collect()
+  # return occ  #I'm not sure what this line is supposed to be doing
+}
+
+
+occ <- open_parquet_file("obis_20220710.parquet")
+    
+```
+
+## Create maps by decade (this takes some time)
+
+```{r}
+# Filer by decade
+decs <- seq(1960, 2020, by=10)
+
+# grid resolution
+RES <- 6
+
+# map defaults
+column <- "es"
+label <- "ES(50)"
+trans <- "identity"
+crs <- "+proj=eqc +lat_ts=0 +lat_0=0 +lon_0=0 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs +type=crs"
+limits <- c(0,50)
+
+
+for (dec in decs){
+  
+  dec_beg = dec
+  dec_end = dec_beg+9
+  
+  occ_dec <- occ %>%
+    filter(
+      date_year >= dec_beg,
+      date_year <= dec_end)
+  
+  # make grid
+  grid_dec <- res_changes(occ_dec, RES)
+  
+  # make map
+  map <- gmap(grid_dec, column, label = label, trans = trans, crs = crs, limits = limits)
+
+  # save map
+  filename <- sprintf("images/globe/map_obis_%s.jpg",dec_beg)
+
+  ggsave(filename = filename,
+       plot=map,
+       width=16000,
+       height=8000,
+       units="px",
+       scale=1,
+       limitsize = FALSE)
+
+  ime <- image_read(filename)
+  # 
+  # crop map
+  ime <- image_crop(ime,"14546x7294+727+348")
+  # ime <- image_trim(ime,fuzz=10)
+  # 
+  image_write(ime, path = filename, format = "jpg")
+  
+}
+```
+
+## create animated gif
+```{r}
+# img <- c(png_map_1960s, png_map_1970s, png_map_1980s, png_map_1990s, png_map_2000s, png_map_2010s, png_map_2020s)
+# 
+# image_append(image_scale(img, "x200"))
+# 
+# obis_es50_gif <- image_animate(image_scale(img, "1200x1200"), fps = 1, dispose = "previous")
+# image_write(obis_es50_gif, "images/obis_es50.gif")
+```
