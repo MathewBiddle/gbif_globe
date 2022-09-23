@@ -1,5 +1,5 @@
 {
-  "name": "gbif_globe",
+  "name": "globe",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

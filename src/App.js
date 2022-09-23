@@ -45,8 +45,8 @@ function App() {
   return <><Globe
     ref={globeEl}
     globeMaterial={globeMaterial}
-    globeImageUrl={`https://raw.githubusercontent.com/MathewBiddle/gbif_globe/master/images/globe/map_obis_${taxa}.jpg`}
-    bumpImageUrl={`https://raw.githubusercontent.com/MathewBiddle/gbif_globe/master/images/etopo1.jpg#${taxa}`}
+    globeImageUrl={`https://raw.githubusercontent.com/MathewBiddle/globe/main/images/globe/map_obis_${taxa}.jpg`}
+    bumpImageUrl={`https://raw.githubusercontent.com/MathewBiddle/globe/main/images/etopo1.jpg#${taxa}`}
     backgroundImageUrl="https:////unpkg.com/three-globe/example/img/night-sky.png" />
     <SideNav
       onSelect={changeTaxa} style={{ backgroundColor: '#111111', top:'auto' }}>
