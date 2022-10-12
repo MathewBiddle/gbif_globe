@@ -178,6 +178,48 @@ for (dec in decs){
 }
 ```
 
+## Create all years
+
+```{r}
+
+# grid resolution
+RES <- 6
+
+# map defaults
+column <- "es"
+label <- "ES(50)"
+trans <- "identity"
+crs <- "+proj=eqc +lat_ts=0 +lat_0=0 +lon_0=0 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs +type=crs"
+limits <- c(0,50)
+
+
+# make grid
+grid_dec <- res_changes(occ, RES)
+
+# make map
+map <- gmap(grid_dec, column, label = label, trans = trans, crs = crs, limits = limits)
+
+# save map
+filename <- "images/globe/map_obis_ALL.jpg"
+
+ggsave(filename = filename,
+       plot=map,
+       width=16000,
+       height=8000,
+       units="px",
+       scale=1,
+       limitsize = FALSE)
+
+ime <- image_read(filename)
+# 
+# crop map
+ime <- image_crop(ime,"14546x7294+727+348")
+# ime <- image_trim(ime,fuzz=10)
+# 
+image_write(ime, path = filename, format = "jpg")
+
+```
+
 ## create animated gif
 ```{r}
 # img <- c(png_map_1960s, png_map_1970s, png_map_1980s, png_map_1990s, png_map_2000s, png_map_2010s, png_map_2020s)
