@@ -231,16 +231,33 @@ df <- data.frame(x = seq(limits[1],limits[2],by=1) , y = seq(limits[1],limits[2]
 p <- ggplot(data = df, aes(x = x, y = y, colour = y)) + 
   geom_point() +
   viridis::scale_color_viridis(option = "inferno", name = "ES50") +
-  theme_minimal()
+  theme_minimal() + 
+  theme(legend.title = element_text(color='white',size = 10), 
+               legend.text = element_text(color='white',size = 10))
+
+
+
 
 leg <- get_legend(p)
 legend <- as_ggplot(leg)
-ggsave(filename = 'images/globe/legend.jpg',
+
+filename = "images/globe/legend.jpg"
+
+ggsave(filename = filename,
        plot=legend,
+       units="px",
+       scale=0.5,
+       bg="transparent"
        )
 
+ime <- image_read(filename)
+# 
+# crop map
+#ime <- image_crop(ime,"14546x7294+727+348")
 
-
+ime <- image_trim(ime,fuzz=1)
+# 
+image_write(ime, path = filename, format = "jpg")
 ```
 
 ## create animated gif
