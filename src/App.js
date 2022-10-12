@@ -4,9 +4,6 @@ import * as THREE from "three";
 import React, { useState, useContext } from 'react';
 import SideNav, { Toggle, Nav, NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
-import { TbArrowsMaximize, TbLayoutSidebarLeftExpand, TbPlant2 } from "react-icons/tb";
-import { GiCalendarHalfYear,GiSquirrel,GiSpottedBug,GiWireframeGlobe } from "react-icons/gi";
-import { SiPluscodes } from "react-icons/si";
 import ReactTooltip from 'react-tooltip';
 
 
@@ -22,7 +19,7 @@ function App() {
 //    globeMaterial.shininess = 15;
 //  });
 
-  const [ taxa, setTaxa ] = React.useState('2020')
+  const [ taxa, setTaxa ] = React.useState('all')
 
   const globeEl = useRef();
 
@@ -50,27 +47,30 @@ function App() {
     backgroundImageUrl="https:////unpkg.com/three-globe/example/img/night-sky.png" />
     <SideNav
       onSelect={changeTaxa} style={{ backgroundColor: '#111111', top:'auto' }}>
-      <SideNav.Nav defaultSelected="2020">
+      <SideNav.Nav defaultSelected="all">
+        <NavItem eventKey="all" data-tip="all"  style={{ marginTop: '20px', cursor: 'pointer' }}>
+            <h2><center>all</center></h2>
+        </NavItem>
         <NavItem eventKey="2020" data-tip="2020"  style={{ marginTop: '20px', cursor: 'pointer' }}>
-            <SiPluscodes  style={{ fontSize: '2em', marginLeft: '15px', marginRight: '10px'}}/>
+            <h1><center>2020</center></h1>
         </NavItem>
         <NavItem eventKey="2010" data-tip="2010"  style={{ marginTop: '20px' }}>
-            <TbPlant2  style={{ fontSize: '2em', marginLeft: '15px' }}/>
+            <h1><center>2010</center></h1>
         </NavItem>
         <NavItem eventKey="2000"  data-tip="2000"   style={{ marginTop: '20px' }}>
-           <GiCalendarHalfYear style={{ fontSize: '2em', marginLeft: '15px' }}/>
+           <h1><center>2000</center></h1>
         </NavItem>
         <NavItem eventKey="1990" data-tip="1990" style={{ marginTop: '20px' }}>
-          <GiSquirrel style={{ fontSize: '2em', marginLeft: '15px'}}/>
+           <h1><center>1990</center></h1>
         </NavItem>
         <NavItem eventKey="1980" data-tip="1980"  style={{ marginTop: '20px' }}>
-          <GiSpottedBug style={{ fontSize: '2em', marginLeft: '15px' }}/>
+           <h1><center>1980</center></h1>
         </NavItem>
         <NavItem eventKey="1970" data-tip="1970"  style={{ marginTop: '20px' }}>
-          <GiWireframeGlobe style={{ fontSize: '2em', marginLeft: '15px' }}/>
+           <h1><center>1970</center></h1>
         </NavItem>
         <NavItem eventKey="1960" data-tip="1960"  style={{ marginTop: '20px' }}>
-          <GiWireframeGlobe style={{ fontSize: '2em', marginLeft: '15px' }}/>
+           <h1><center>1960</center></h1>
         </NavItem>
       </SideNav.Nav>
     </SideNav>
