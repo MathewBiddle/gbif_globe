@@ -200,7 +200,7 @@ grid_dec <- res_changes(occ, RES)
 map <- gmap(grid_dec, column, label = label, trans = trans, crs = crs, limits = limits)
 
 # save map
-filename <- "images/globe/map_obis_ALL.jpg"
+filename <- "images/globe/map_obis_all.jpg"
 
 ggsave(filename = filename,
        plot=map,
