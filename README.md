@@ -41,7 +41,7 @@ To update web version:
 * The Rmarkdown file [use_parquet_file_for_globe.Rmd](https://github.com/MathewBiddle/globe/blob/main/use_parquet_file_for_globe.Rmd) is used to create the indicator images that are overlayed on the map.
 
 ### Some things to note about creating the jpg images for the globe:
-* projection is [Platte Carree](https://pro.arcgis.com/en/pro-app/2.8/help/mapping/properties/plate-carree.htm) with a central longitude at 0.0.
+* projection is [Plate Carree](https://pro.arcgis.com/en/pro-app/2.8/help/mapping/properties/plate-carree.htm) with a central longitude at 0.0.
 * figure size is width=`160`, height=`80` in inches.
 
 
