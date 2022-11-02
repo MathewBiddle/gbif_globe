@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "https://mathewbiddle.github.io/globe/static/css/main.12f2392f.css",
-    "main.js": "https://mathewbiddle.github.io/globe/static/js/main.b32abd4a.js",
+    "main.js": "https://mathewbiddle.github.io/globe/static/js/main.70d97be6.js",
     "index.html": "https://mathewbiddle.github.io/globe/index.html",
     "main.12f2392f.css.map": "https://mathewbiddle.github.io/globe/static/css/main.12f2392f.css.map",
-    "main.b32abd4a.js.map": "https://mathewbiddle.github.io/globe/static/js/main.b32abd4a.js.map"
+    "main.70d97be6.js.map": "https://mathewbiddle.github.io/globe/static/js/main.70d97be6.js.map"
   },
   "entrypoints": [
     "static/css/main.12f2392f.css",
-    "static/js/main.b32abd4a.js"
+    "static/js/main.70d97be6.js"
   ]
 }
