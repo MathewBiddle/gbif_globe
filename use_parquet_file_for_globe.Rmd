@@ -150,7 +150,7 @@ ptm <- proc.time()
 
 # grid resolution
 # defined at https://h3geo.org/docs/core-library/restable/
-RES <- 4
+RES <- 3
 
 # map defaults
 column <- "es"
@@ -207,7 +207,7 @@ for (dec in decs){
   map <- gmap(grid_dec, column, label = label, trans = trans, crs = crs, limits = limits)
 
   # save map
-  filename <- sprintf("images/globe/map_obis_%s.jpg",dec_beg)
+  filename <- sprintf("images/globe/h3_map_obis_%s.jpg",dec_beg)
 
   ggsave(filename = filename,
        plot=map,
@@ -250,7 +250,7 @@ grid_dec <- res_changes(occ, RES)
 map <- gmap(grid_dec, column, label = label, trans = trans, crs = crs, limits = limits)
 
 # save map
-filename <- "images/globe/map_obis_all.jpg"
+filename <- "images/globe/h3_map_obis_all.jpg"
 
 ggsave(filename = filename,
        plot=map,
@@ -291,7 +291,7 @@ p <- ggplot(data = df, aes(x = x, y = y, colour = y)) +
 leg <- get_legend(p)
 legend <- as_ggplot(leg)
 
-filename = "images/globe/legend.jpg"
+filename = "images/globe/h3_legend.jpg"
 
 ggsave(filename = filename,
        plot=legend,
