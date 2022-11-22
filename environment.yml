@@ -12,4 +12,3 @@ dependencies:
   - numpy
   - cartopy
   - jupyter
-prefix: C:\Users\Mathew.Biddle\programs\Anaconda3\envs\globe
