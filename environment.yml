@@ -5,6 +5,11 @@ dependencies:
   - python=3.10
   - nodejs
   - geopandas
+  - humanize
+  - fastparquet
+  - datashader
+  - dask
+  - s3fs
   - pandas
   - shapely
   - geoplot
