@@ -34,7 +34,7 @@ To update web version:
 * That will kick off the [GH-Action](https://github.com/MathewBiddle/globe/actions) to rebuild the webpage.
 
 ## To create the jpg images for the globe
-* All images that are displayed on the map are found at https://github.com/MathewBiddle/gbif_globe/tree/master/images
+* All images that are displayed on the map are found at https://github.com/MathewBiddle/gbif_globe/tree/main/images
 * The Jupyter notebook [Create_species_map_from_OBIS_API.ipynb](https://github.com/MathewBiddle/globe/blob/main/Create_species_map_from_OBIS_API.ipynb) is used to create the images.
 * All image file names must follow the url structure defined in [App.js](https://github.com/MathewBiddle/globe/blob/bfb6a119e4c619d175eaa0ccb9145563f7f330b5/src/App.js#L43). _Unless you change the App.js code._
 * The images overlay on the globe and topography images with some level of opacity. It's best to do some dark background with your data image.
