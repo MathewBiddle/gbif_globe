@@ -160,10 +160,16 @@ trans <- "identity"
 crs <- "+proj=eqc +lat_ts=0 +lat_0=0 +lon_0=0 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs +type=crs"
 limits <- c(0,50)
 
+##Decade dates
+dec=2000
+dec_beg = dec
+dec_end = dec_beg+1
+
+
 occ_dec <- occ %>%
     filter(
-    date_year >= 2000,
-    date_year <= 2001)
+    date_year >= dec_beg,
+    date_year <= dec_end)
   
   # make grid
 grid_dec <- res_changes(occ_dec, RES)
@@ -174,7 +180,9 @@ proc.time() - ptm
 
 geojson_string <- geojsonsf::sf_geojson(grid_dec[c("es","geometry")])
 
-write(x=geojson_string, file="es50_2000_2001_res3.geojson")
+fname <- sprintf("data/%s_%s_%s_res%s.geojson",column,dec_beg,dec_end,RES)
+
+write(x=geojson_string, file=fname)
 ```
 
 
@@ -209,33 +217,33 @@ for (dec in decs){
   grid_dec <- res_changes(occ_dec, RES)
   
   # save as geojson
-  geojson_string <- geojsonsf::sf_geojson(grid_dec[c("es","geometry")])
+  geojson_string <- geojsonsf::sf_geojson(grid_dec[c(column,"geometry")])
   
-  fname <- sprintf("data/%s_%s_%s_res%s.geojson",column,dec_beg,dec_end,res)
+  fname <- sprintf("data/%s_%s_%s_res%s.geojson",column,dec_beg,dec_end,RES)
   
   write(x=geojson_string, file=fname)
   
-  # make map
-  map <- gmap(grid_dec, column, label = label, trans = trans, crs = crs, limits = limits)
-
-  # save map
-  filename <- sprintf("images/globe/h3_map_obis_%s.jpg",dec_beg)
-
-  ggsave(filename = filename,
-        plot=map,
-        width=16000,
-        height=8000,
-        units="px",
-        scale=1,
-        limitsize = FALSE)
-
-  ime <- image_read(filename)
-  #
-  # crop map
-  ime <- image_crop(ime,"14546x7294+727+348")
-  # ime <- image_trim(ime,fuzz=10)
-  
-  image_write(ime, path = filename, format = "jpg")
+  # # make map
+  # map <- gmap(grid_dec, column, label = label, trans = trans, crs = crs, limits = limits)
+  # 
+  # # save map
+  # filename <- sprintf("images/globe/h3_map_obis_%s.jpg",dec_beg)
+  # 
+  # ggsave(filename = filename,
+  #       plot=map,
+  #       width=16000,
+  #       height=8000,
+  #       units="px",
+  #       scale=1,
+  #       limitsize = FALSE)
+  # 
+  # ime <- image_read(filename)
+  # #
+  # # crop map
+  # ime <- image_crop(ime,"14546x7294+727+348")
+  # # ime <- image_trim(ime,fuzz=10)
+  # 
+  # image_write(ime, path = filename, format = "jpg")
   
 }
 ```
@@ -258,27 +266,34 @@ limits <- c(0,50)
 # make grid
 grid_dec <- res_changes(occ, RES)
 
-# make map
-map <- gmap(grid_dec, column, label = label, trans = trans, crs = crs, limits = limits)
+# save as geojson
+geojson_string <- geojsonsf::sf_geojson(grid_dec[c(column,"geometry")])
+  
+fname <- sprintf("data/%s_all_res%s.geojson",column,RES)
+  
+write(x=geojson_string, file=fname)
 
-# save map
-filename <- "images/globe/h3_map_obis_all.jpg"
-
-ggsave(filename = filename,
-       plot=map,
-       width=16000,
-       height=8000,
-       units="px",
-       scale=1,
-       limitsize = FALSE)
-
-ime <- image_read(filename)
+# # make map
+# map <- gmap(grid_dec, column, label = label, trans = trans, crs = crs, limits = limits)
 # 
-# crop map
-ime <- image_crop(ime,"14546x7294+727+348")
-# ime <- image_trim(ime,fuzz=10)
+# # save map
+# filename <- "images/globe/h3_map_obis_all.jpg"
 # 
-image_write(ime, path = filename, format = "jpg")
+# ggsave(filename = filename,
+#        plot=map,
+#        width=16000,
+#        height=8000,
+#        units="px",
+#        scale=1,
+#        limitsize = FALSE)
+# 
+# ime <- image_read(filename)
+# # 
+# # crop map
+# ime <- image_crop(ime,"14546x7294+727+348")
+# # ime <- image_trim(ime,fuzz=10)
+# # 
+# image_write(ime, path = filename, format = "jpg")
 
 ```
 
