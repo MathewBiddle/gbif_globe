@@ -146,6 +146,7 @@ occ <- open_parquet_file("../obis_20220710.parquet")
 # testing
 
 ```{r}
+library("rgdal")
 ptm <- proc.time()
 
 # grid resolution
@@ -162,18 +163,22 @@ limits <- c(0,50)
 occ_dec <- occ %>%
     filter(
     date_year >= 2000,
-    date_year <= 2009)
+    date_year <= 2001)
   
   # make grid
 grid_dec <- res_changes(occ_dec, RES)
 
 proc.time() - ptm
   # make map
-map <- gmap(grid_dec, column, label = label, trans = trans, crs = crs, limits = limits)
+# map <- gmap(grid_dec, column, label = label, trans = trans, crs = crs, limits = limits)
+
+geojson_string <- geojsonsf::sf_geojson(grid_dec[c("es","geometry")])
+
+write(x=geojson_string, file="es50_2000_2001_res3.geojson")
 ```
 
 
-## Create maps by decade (this takes some time)
+## Create maps/data by decade (this takes some time)
 
 ```{r}
 # Filer by decade
@@ -203,6 +208,13 @@ for (dec in decs){
   # make grid
   grid_dec <- res_changes(occ_dec, RES)
   
+  # save as geojson
+  geojson_string <- geojsonsf::sf_geojson(grid_dec[c("es","geometry")])
+  
+  fname <- sprintf("data/%s_%s_%s_res%s.geojson",column,dec_beg,dec_end,res)
+  
+  write(x=geojson_string, file=fname)
+  
   # make map
   map <- gmap(grid_dec, column, label = label, trans = trans, crs = crs, limits = limits)
 
@@ -210,19 +222,19 @@ for (dec in decs){
   filename <- sprintf("images/globe/h3_map_obis_%s.jpg",dec_beg)
 
   ggsave(filename = filename,
-       plot=map,
-       width=16000,
-       height=8000,
-       units="px",
-       scale=1,
-       limitsize = FALSE)
+        plot=map,
+        width=16000,
+        height=8000,
+        units="px",
+        scale=1,
+        limitsize = FALSE)
 
   ime <- image_read(filename)
-  # 
+  #
   # crop map
   ime <- image_crop(ime,"14546x7294+727+348")
   # ime <- image_trim(ime,fuzz=10)
-  # 
+  
   image_write(ime, path = filename, format = "jpg")
   
 }
