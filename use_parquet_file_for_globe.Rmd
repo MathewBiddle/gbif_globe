@@ -1,4 +1,4 @@
----
+-----
 title: "resolution"
 output: rmarkdown::html_vignette
 vignette: >
@@ -178,7 +178,7 @@ proc.time() - ptm
   # make map
 # map <- gmap(grid_dec, column, label = label, trans = trans, crs = crs, limits = limits)
 
-geojson_string <- geojsonsf::sf_geojson(grid_dec[c("es","geometry")])
+geojson_string <- geojsonsf::sf_geojson(grid_dec)#[c(column,"geometry")])
 
 fname <- sprintf("data/%s_%s_%s_res%s.geojson",column,dec_beg,dec_end,RES)
 
@@ -217,9 +217,9 @@ for (dec in decs){
   grid_dec <- res_changes(occ_dec, RES)
   
   # save as geojson
-  geojson_string <- geojsonsf::sf_geojson(grid_dec[c(column,"geometry")])
+  geojson_string <- geojsonsf::sf_geojson(grid_dec)#[c(column,"geometry")])
   
-  fname <- sprintf("data/%s_%s_%s_res%s.geojson",column,dec_beg,dec_end,RES)
+  fname <- sprintf("data/indicators_%s_%s_res%s.geojson",dec_beg,dec_end,RES)
   
   write(x=geojson_string, file=fname)
   
@@ -251,7 +251,7 @@ for (dec in decs){
 ## Create all years
 
 ```{r}
-
+ptm <- proc.time()
 # grid resolution
 RES <- 3
 
@@ -267,9 +267,9 @@ limits <- c(0,50)
 grid_dec <- res_changes(occ, RES)
 
 # save as geojson
-geojson_string <- geojsonsf::sf_geojson(grid_dec[c(column,"geometry")])
+geojson_string <- geojsonsf::sf_geojson(grid_dec)#[c(column,"geometry")])
   
-fname <- sprintf("data/%s_all_res%s.geojson",column,RES)
+fname <- sprintf("data/indicators_all_res%s.geojson",RES)
   
 write(x=geojson_string, file=fname)
 
@@ -294,6 +294,7 @@ write(x=geojson_string, file=fname)
 # # ime <- image_trim(ime,fuzz=10)
 # # 
 # image_write(ime, path = filename, format = "jpg")
+proc.time() - ptm
 
 ```
 
