@@ -1,0 +1,155 @@
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(obisindicators)
+library(dplyr)
+library(h3)
+library(sf)
+library(arrow)
+library(magick)
+library(ggplot2)
+```
+
+
+## Create function to make grid, calculate metrics for different resolution grid sizes
+
+```{r function}
+res_changes <- function(occ, resolution = 9){
+  
+    hex <- obisindicators::make_hex_res(resolution)
+    
+    occ <- occ %>%
+      mutate(
+        cell = h3::geo_to_h3(
+          data.frame(decimalLatitude,decimalLongitude),
+          res = resolution
+        )
+      )
+     
+    idx <- obisindicators::calc_indicators(occ)
+    
+    grid <- hex %>%
+      inner_join(
+        idx,
+        by = c("hexid" = "cell")
+      )
+    
+#    dggs <- dgconstruct(projection = "ISEA", topology = "HEXAGON", res = resolution)
+#    occur$cell <- dgGEO_to_SEQNUM(dggs, occur$decimalLongitude, occur$decimalLatitude)[["seqnum"]]
+#    idx <- calc_indicators(occur)
+
+#  grid <- dgcellstogrid(dggs, idx$cell) %>%
+#    st_wrap_dateline() %>%
+#    rename(cell = seqnum) %>%
+#    left_join(
+#      idx,
+#      by = "cell")
+  return(grid)
+}
+```
+
+# Lets do some work!
+
+## Get the OBIS records
+```{r }
+# get OBIS records
+
+# obis_20220710.parquet downloaded from https://obis.org/data/access on 2022-09-06
+#   NOTE: .gitignore prevents this large file from being on Github
+
+open_parquet_file <- function(filepath){
+  occ_all <- arrow::open_dataset(filepath)
+  # NOTE: there are lots of other fields in the parquet file.
+  #     These could be used in the future.
+  occ <- occ_all %>%
+    group_by(
+      decimalLongitude, decimalLatitude, species, date_year) %>%  # remove duplicate rows
+    filter(!is.na(species))  %>%
+    summarize(
+      records = n(),
+      .groups = "drop") %>%
+    collect()
+  # return occ  #I'm not sure what this line is supposed to be doing
+}
+
+
+occ <- open_parquet_file("../obis_20230208.parquet")
+    
+```
+
+# Identify US waters
+```{r}
+
+path <- "data/US_Waters_2024_WGS84/US_Waters_2024_WGS84.shp"
+tt <- read_sf(path) %>%
+  st_transform(27572)
+ggplot() +
+geom_sf(data=tt)
+```
+# filter to generic "u.s. waters" box.
+```{r}
+occ_box <- occ %>%
+  filter(between(decimalLatitude,0.00,74.7)) %>%
+  filter(between(decimalLongitude,-180.0,-40.0) | between(decimalLongitude,160.0,180.0))
+```
+# Subset OBIS to US Waters
+```{r}
+occ_sf <- sf::st_as_sf(occ_box, coords = c("decimalLongitude", "decimalLatitude"), 
+                 crs = 4326) %>%
+  st_transform(27572)
+
+#occ_trans <- sf::st_transform(occ_sf,27572)
+
+logi_point_in_pol <- sf::st_intersects(tt, occ_sf, sparse = FALSE)
+
+point_in_pol <- occ_box[as.vector(logi_point_in_pol), ]
+```
+
+
+
+# testing
+
+```{r}
+library("rgdal")
+ptm <- proc.time()
+
+# grid resolution
+# defined at https://h3geo.org/docs/core-library/restable/
+RES <- 3
+
+# map defaults
+column <- "es"
+label <- "ES(50)"
+trans <- "identity"
+crs <- "+proj=eqc +lat_ts=0 +lat_0=0 +lon_0=0 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs +type=crs"
+limits <- c(0,50)
+
+##Decade dates
+dec=2000
+dec_beg = dec
+dec_end = dec_beg+1
+
+
+occ_dec <- occ %>%
+    filter(
+    date_year >= dec_beg,
+    date_year <= dec_end)
+  
+  # make grid
+grid_dec <- res_changes(occ_dec, RES)
+
+proc.time() - ptm
+  # make map
+# map <- gmap(grid_dec, column, label = label, trans = trans, crs = crs, limits = limits)
+
+geojson_string <- geojsonsf::sf_geojson(grid_dec)#[c(column,"geometry")])
+
+fname <- sprintf("data/%s_%s_%s_res%s_test.geojson",column,dec_beg,dec_end,RES)
+
+write(x=geojson_string, file=fname)
+```
