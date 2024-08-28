@@ -95,8 +95,13 @@ geom_sf(data=tt)
 ```{r}
 occ_box <- occ %>%
   filter(between(decimalLatitude,0.00,74.7)) %>%
-  filter(between(decimalLongitude,-180.0,-40.0) | between(decimalLongitude,160.0,180.0))
+  filter(between(decimalLongitude,-180.0,-40.0) | between(decimalLongitude,160.0,180.0))  
+  # filter(
+  #   date_year >= 2000,
+  #   date_year <= 2001)
 ```
+
+
 # Subset OBIS to US Waters
 ```{r}
 occ_sf <- sf::st_as_sf(occ_box, coords = c("decimalLongitude", "decimalLatitude"), 
@@ -105,14 +110,20 @@ occ_sf <- sf::st_as_sf(occ_box, coords = c("decimalLongitude", "decimalLatitude"
 
 #occ_trans <- sf::st_transform(occ_sf,27572)
 
-logi_point_in_pol <- sf::st_intersects(tt, occ_sf, sparse = FALSE)
+# test each point in each polygon (# pts by # polygons) TRUE = point is in polygon
+logi_point_in_pol <- as.data.frame(sf::st_intersects(occ_sf, tt, sparse = FALSE))
 
-point_in_pol <- occ_box[as.vector(logi_point_in_pol), ]
+#logi_point_in_pol <- as.data.frame(logi_point_in_pol)
+
+vect <- logi_point_in_pol %>%
+     mutate(anyTRUE = if_any(.cols = contains('V')))
+
+occ_in_poly <- occ_box[as.vector(vect$anyTRUE), ]
 ```
 
 
 
-# testing
+# Compute indicators
 
 ```{r}
 library("rgdal")
@@ -120,7 +131,7 @@ ptm <- proc.time()
 
 # grid resolution
 # defined at https://h3geo.org/docs/core-library/restable/
-RES <- 3
+RES <- 6
 
 # map defaults
 column <- "es"
@@ -129,27 +140,19 @@ trans <- "identity"
 crs <- "+proj=eqc +lat_ts=0 +lat_0=0 +lon_0=0 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs +type=crs"
 limits <- c(0,50)
 
-##Decade dates
-dec=2000
-dec_beg = dec
-dec_end = dec_beg+1
-
-
-occ_dec <- occ %>%
-    filter(
-    date_year >= dec_beg,
-    date_year <= dec_end)
+occ_dec <- occ_in_poly %>%
+  filter(
+     date_year >= 2000,
+     date_year <= 2001)
   
   # make grid
 grid_dec <- res_changes(occ_dec, RES)
 
 proc.time() - ptm
-  # make map
-# map <- gmap(grid_dec, column, label = label, trans = trans, crs = crs, limits = limits)
 
-geojson_string <- geojsonsf::sf_geojson(grid_dec)#[c(column,"geometry")])
+geojson_string <- geojsonsf::sf_geojson(grid_dec)
 
-fname <- sprintf("data/%s_%s_%s_res%s_test.geojson",column,dec_beg,dec_end,RES)
+fname <- sprintf("data/indicators_2000_2001_res%s.geojson",RES)
 
 write(x=geojson_string, file=fname)
 ```
