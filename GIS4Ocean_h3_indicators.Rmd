@@ -93,12 +93,16 @@ geom_sf(data=tt)
 ```
 # filter to generic "u.s. waters" box.
 ```{r}
+
+date_beg <- 1970
+date_end <- date_beg+1
+
 occ_box <- occ %>%
   filter(between(decimalLatitude,0.00,74.7)) %>%
-  filter(between(decimalLongitude,-180.0,-40.0) | between(decimalLongitude,160.0,180.0))  
-  # filter(
-  #   date_year >= 2000,
-  #   date_year <= 2001)
+  filter(between(decimalLongitude,-180.0,-40.0) | between(decimalLongitude,160.0,180.0))  %>%
+  filter(
+     date_year >= date_beg,
+     date_year <= date_end)
 ```
 
 
@@ -123,7 +127,7 @@ occ_in_poly <- occ_box[as.vector(vect$anyTRUE), ]
 
 
 
-# Compute indicators
+# Build the hex
 
 ```{r}
 library("rgdal")
@@ -140,19 +144,45 @@ trans <- "identity"
 crs <- "+proj=eqc +lat_ts=0 +lat_0=0 +lon_0=0 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs +type=crs"
 limits <- c(0,50)
 
-occ_dec <- occ_in_poly %>%
-  filter(
-     date_year >= 2000,
-     date_year <= 2001)
+occ_dec <- occ_in_poly
   
   # make grid
-grid_dec <- res_changes(occ_dec, RES)
+# grid_dec <- res_changes(occ_dec, RES)
+
+hex <- obisindicators::make_hex_res(RES)
+proc.time() - ptm
+```
+
+# compute the indicator
+```{r}
+ptm <- proc.time()
+
+occ_h3 <- occ_dec %>%
+  mutate(
+    cell = h3::geo_to_h3(
+      data.frame(decimalLatitude,decimalLongitude),
+      res = RES
+    )
+  )
+
+idx <- obisindicators::calc_indicators(occ_h3)
+
+grid_dec <- hex %>%
+  inner_join(
+    idx,
+    by = c("hexid" = "cell")
+  )
+    
 
 proc.time() - ptm
+```
 
+# write the data
+```{r}
 geojson_string <- geojsonsf::sf_geojson(grid_dec)
 
-fname <- sprintf("data/indicators_2000_2001_res%s.geojson",RES)
+fname <- sprintf("data/indicators_%s_%s_res%s.geojson",date_beg,date_end,RES)
 
 write(x=geojson_string, file=fname)
 ```
+
