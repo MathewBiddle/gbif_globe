@@ -180,7 +180,7 @@ proc.time() - ptm
 
 geojson_string <- geojsonsf::sf_geojson(grid_dec)#[c(column,"geometry")])
 
-fname <- sprintf("data/%s_%s_%s_res%s.geojson",column,dec_beg,dec_end,RES)
+fname <- sprintf("data/%s_%s_%s_res%s_test.geojson",column,dec_beg,dec_end,RES)
 
 write(x=geojson_string, file=fname)
 ```
